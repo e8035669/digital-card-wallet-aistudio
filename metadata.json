@@ -1,0 +1,7 @@
+{
+  "name": "Digital Card Wallet",
+  "description": "Digitize your physical gift cards and merchandise cards. Scan or manually enter barcode information to store them conveniently on your phone, so you don't have to carry the physical cards.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
