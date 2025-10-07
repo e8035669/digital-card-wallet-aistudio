@@ -8,19 +8,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "vite": "https://aistudiocdn.com/vite@^7.1.9",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.4"
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-gray-900 text-white">
   <div id="root"></div>
-  <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
