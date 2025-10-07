@@ -1,4 +1,4 @@
-import { CardType } from './types.js';
+import { CardType } from './types';
 
 interface CardTypeConfig {
   name: string;

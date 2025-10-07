@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card } from '../types.js';
-import PlusIcon from './icons/PlusIcon.js';
-import { CARD_TYPE_CONFIG } from '../constants.js';
+import { Card } from '../types';
+import PlusIcon from './icons/PlusIcon';
+import { CARD_TYPE_CONFIG } from '../constants';
 
 interface CardListProps {
   cards: Card[];

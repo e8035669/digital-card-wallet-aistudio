@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, CardType } from '../types.js';
-import { CARD_TYPE_CONFIG } from '../constants.js';
-import Scanner from './Scanner.js';
+import { Card, CardType } from '../types';
+import { CARD_TYPE_CONFIG } from '../constants';
+import Scanner from './Scanner';
 
 declare var Html5Qrcode: any;
 
