@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const ChevronLeftIcon = ({ className }: { className?: string }) => (

@@ -1,10 +1,9 @@
-
 import React, { useState, useMemo } from 'react';
-import useLocalStorage from './hooks/useLocalStorage.ts';
-import { Card } from './types.ts';
-import CardList from './components/CardList.tsx';
-import AddCard from './components/AddCard.tsx';
-import CardDetail from './components/CardDetail.tsx';
+import useLocalStorage from './hooks/useLocalStorage.js';
+import { Card } from './types.js';
+import CardList from './components/CardList.js';
+import AddCard from './components/AddCard.js';
+import CardDetail from './components/CardDetail.js';
 
 type View = 'list' | 'add' | 'detail';
 
