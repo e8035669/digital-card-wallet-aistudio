@@ -1,4 +1,4 @@
-import { CardType } from './types';
+import { CardType } from './types.ts';
 
 interface CardTypeConfig {
   name: string;

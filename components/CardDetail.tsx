@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { Card } from '../types';
-import { CARD_TYPE_CONFIG } from '../constants';
-import Barcode from './Barcode';
-import ChevronLeftIcon from './icons/ChevronLeftIcon';
-import TrashIcon from './icons/TrashIcon';
+import { Card } from '../types.ts';
+import { CARD_TYPE_CONFIG } from '../constants.ts';
+import Barcode from './Barcode.tsx';
+import ChevronLeftIcon from './icons/ChevronLeftIcon.tsx';
+import TrashIcon from './icons/TrashIcon.tsx';
 
 interface CardDetailProps {
   card: Card;
