@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 
 declare var Html5Qrcode: any;
