@@ -1,0 +1,16 @@
+[workspace]
+authors = ["Jeff Zhang <e8035669@gmail.com>"]
+channels = ["conda-forge"]
+name = "digital-card-wallet-aistudio"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+install = "npm ci"
+dev = "npm run dev"
+build = "npm run build"
+preview = "npm run preview"
+typecheck = "npx tsc --noEmit"
+
+[dependencies]
+nodejs = ">=26.12.1,<26.13"
