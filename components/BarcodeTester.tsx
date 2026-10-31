@@ -12,6 +12,7 @@ interface ScanEntry {
   id: number;
   text: string;
   format: string;
+  decoder: string;
   count: number;
   firstAt: string;
   lastAt: string;
@@ -32,6 +33,13 @@ const FORMAT_OPTIONS = [
   'QR_CODE',
 ];
 
+const RESOLUTION_OPTIONS = [
+  { value: 'default', label: '預設', size: null },
+  { value: '720', label: '1280×720', size: { width: 1280, height: 720 } },
+  { value: '1080', label: '1920×1080', size: { width: 1920, height: 1080 } },
+  { value: '2160', label: '3840×2160', size: { width: 3840, height: 2160 } },
+] as const;
+
 const HISTORY_LIMIT = 30;
 
 const formatTime = (d: Date) =>
@@ -48,23 +56,43 @@ const BarcodeTester: React.FC<BarcodeTesterProps> = ({ onBack }) => {
   const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
   const [history, setHistory] = useState<ScanEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [resolution, setResolution] = useState<string>('1080');
+  const [continuousFocus, setContinuousFocus] = useState(true);
+  const [allowNativeDetector, setAllowNativeDetector] = useState(true);
+  const [cameraInfo, setCameraInfo] = useState<string | null>(null);
 
   useEffect(() => {
     if (!running) return;
     setError(null);
+    setCameraInfo(null);
 
-    const config: Record<string, unknown> = { verbose: false };
+    const config: Record<string, unknown> = {
+      verbose: false,
+      useBarCodeDetectorIfSupported: allowNativeDetector,
+    };
     if (selectedFormats.length > 0) {
       config.formatsToSupport = selectedFormats.map(name => Html5QrcodeSupportedFormats[name]);
     }
     const html5QrCode = new Html5Qrcode('barcode-tester-reader', config);
     let nextId = 0;
 
+    // When videoConstraints is given, html5-qrcode ignores the camera argument, so facingMode must be repeated here.
+    const videoConstraints: Record<string, unknown> = { facingMode: 'environment' };
+    const size = RESOLUTION_OPTIONS.find(o => o.value === resolution)?.size;
+    if (size) {
+      videoConstraints.width = { ideal: size.width };
+      videoConstraints.height = { ideal: size.height };
+    }
+    if (continuousFocus) {
+      videoConstraints.advanced = [{ focusMode: 'continuous' }];
+    }
+
     const startPromise: Promise<unknown> = html5QrCode
       .start(
         { facingMode: 'environment' },
         {
           fps: 10,
+          videoConstraints,
           qrbox: (viewfinderWidth: number, viewfinderHeight: number) => {
             const width = Math.floor(viewfinderWidth * 0.8);
             const height = Math.floor(Math.min(viewfinderHeight * 0.6, width * 0.6));
@@ -74,20 +102,30 @@ const BarcodeTester: React.FC<BarcodeTesterProps> = ({ onBack }) => {
         (decodedText: string, decodedResult: any) => {
           const format: string =
             decodedResult?.result?.format?.formatName ?? decodedResult?.result?.format?.format ?? 'UNKNOWN';
+          const decoder: string = decodedResult?.debugData?.decoderName ?? 'unknown';
           const now = formatTime(new Date());
           setHistory(prev => {
             const [latest, ...rest] = prev;
-            if (latest && latest.text === decodedText && latest.format === format) {
+            if (latest && latest.text === decodedText && latest.format === format && latest.decoder === decoder) {
               return [{ ...latest, count: latest.count + 1, lastAt: now }, ...rest];
             }
             return [
-              { id: Date.now() + nextId++, text: decodedText, format, count: 1, firstAt: now, lastAt: now },
+              { id: Date.now() + nextId++, text: decodedText, format, decoder, count: 1, firstAt: now, lastAt: now },
               ...prev,
             ].slice(0, HISTORY_LIMIT);
           });
         },
         () => {}
       )
+      .then(() => {
+        try {
+          const settings = html5QrCode.getRunningTrackSettings();
+          const parts = [`${settings.width}×${settings.height}`];
+          if (settings.frameRate) parts.push(`${Math.round(settings.frameRate)} fps`);
+          parts.push(`對焦：${settings.focusMode ?? '瀏覽器未回報'}`);
+          setCameraInfo(parts.join('，'));
+        } catch { /* scanner may already be stopped */ }
+      })
       .catch((err: unknown) => {
         console.error('Unable to start scanner', err);
         setError('無法啟動相機，請確認已授權相機權限，且使用 HTTPS 或 localhost。');
@@ -108,7 +146,7 @@ const BarcodeTester: React.FC<BarcodeTesterProps> = ({ onBack }) => {
         try { html5QrCode.clear(); } catch { /* element may be gone */ }
       })();
     };
-  }, [running, selectedFormats]);
+  }, [running, selectedFormats, resolution, continuousFocus, allowNativeDetector]);
 
   const toggleFormat = (name: string) => {
     setSelectedFormats(prev => (prev.includes(name) ? prev.filter(f => f !== name) : [...prev, name]));
@@ -149,9 +187,48 @@ const BarcodeTester: React.FC<BarcodeTesterProps> = ({ onBack }) => {
         </section>
 
         <section className="bg-gray-800 rounded-xl shadow-lg p-5">
+          <h2 className="text-lg font-bold text-white">相機與解碼設定</h2>
+          <p className="text-sm text-gray-400 mt-1">變更後會自動重新啟動相機。</p>
+          <div className="mt-3">
+            <label htmlFor="resolution" className="block text-sm text-gray-300">
+              請求解析度（ideal，實際值由裝置決定）
+            </label>
+            <select
+              id="resolution"
+              value={resolution}
+              onChange={e => setResolution(e.target.value)}
+              className="mt-1 w-full rounded-md bg-gray-700 text-white text-sm px-3 py-2"
+            >
+              {RESOLUTION_OPTIONS.map(o => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
+          <label className="mt-3 flex items-center space-x-2 text-sm text-gray-300">
+            <input
+              type="checkbox"
+              checked={continuousFocus}
+              onChange={e => setContinuousFocus(e.target.checked)}
+            />
+            <span>連續對焦（focusMode: continuous）</span>
+          </label>
+          <label className="mt-2 flex items-center space-x-2 text-sm text-gray-300">
+            <input
+              type="checkbox"
+              checked={allowNativeDetector}
+              onChange={e => setAllowNativeDetector(e.target.checked)}
+            />
+            <span>允許使用瀏覽器內建 BarcodeDetector（關閉則強制使用 ZXing）</span>
+          </label>
+          <p className="mt-3 text-xs text-gray-400 font-mono">
+            實際串流：{cameraInfo ?? (running ? '啟動中…' : '—')}
+          </p>
+        </section>
+
+        <section className="bg-gray-800 rounded-xl shadow-lg p-5">
           <h2 className="text-lg font-bold text-white">限定格式</h2>
           <p className="text-sm text-gray-400 mt-1">
-            未選取時辨識所有格式（與新增卡片相同）。變更後會自動重新啟動相機。
+            未選取時辨識所有格式（與新增卡片相同）。
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {FORMAT_OPTIONS.map(name => {
@@ -179,6 +256,10 @@ const BarcodeTester: React.FC<BarcodeTesterProps> = ({ onBack }) => {
               <div>
                 <dt className="text-gray-400">格式</dt>
                 <dd className="font-mono text-indigo-300">{latest.format}</dd>
+              </div>
+              <div>
+                <dt className="text-gray-400">解碼器</dt>
+                <dd className="font-mono text-indigo-300">{latest.decoder}</dd>
               </div>
               <div>
                 <dt className="text-gray-400">內容（{Array.from(latest.text).length} 字元）</dt>
@@ -212,7 +293,7 @@ const BarcodeTester: React.FC<BarcodeTesterProps> = ({ onBack }) => {
             {history.map(entry => (
               <li key={entry.id} className="bg-gray-900 rounded-md p-3 text-sm">
                 <div className="flex items-center justify-between text-xs text-gray-400">
-                  <span className="font-mono text-indigo-300">{entry.format}</span>
+                  <span className="font-mono text-indigo-300">{entry.format}・{entry.decoder}</span>
                   <span>
                     ×{entry.count}　{entry.firstAt}
                     {entry.count > 1 && ` ~ ${entry.lastAt}`}
