@@ -2,6 +2,8 @@ export enum CardType {
   SevenEleven = 'SEVEN_ELEVEN',
   Library = 'LIBRARY',
   Generic = 'GENERIC',
+  FamilyMartGift = 'FAMILY_MART_GIFT',
+  GenericGift = 'GENERIC_GIFT',
 }
 
 export interface Card {

@@ -17,6 +17,8 @@
   | 7-Eleven Merchandise Card | 2 |
   | Library Card | 1 |
   | Generic Card | 1 |
+  | FamilyMart Gift Card | 2 |
+  | Generic Gift Card | 2 |
 
 - 卡片列表（依建立時間新到舊排序）、卡片詳情（同畫面顯示兩組條碼）、刪除卡片
 - 資料只存在瀏覽器 `localStorage`（key：`digital-wallet-cards`），無後端、無帳號、不上傳任何資料

@@ -22,4 +22,14 @@ export const CARD_TYPE_CONFIG: Record<CardType, CardTypeConfig> = {
     barcodeCount: 1,
     barcodeLabels: ['條碼'],
   },
+  [CardType.FamilyMartGift]: {
+    name: '全家禮物卡',
+    barcodeCount: 2,
+    barcodeLabels: ['條碼 1', '條碼 2'],
+  },
+  [CardType.GenericGift]: {
+    name: '一般禮物卡',
+    barcodeCount: 2,
+    barcodeLabels: ['條碼 1', '條碼 2'],
+  },
 };
