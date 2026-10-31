@@ -7,11 +7,12 @@ interface SettingsProps {
   cards: Card[];
   onBack: () => void;
   onRestore: (cards: Card[]) => void;
+  onOpenBarcodeTester: () => void;
 }
 
 type Notice = { kind: 'success' | 'error'; text: string };
 
-const Settings: React.FC<SettingsProps> = ({ cards, onBack, onRestore }) => {
+const Settings: React.FC<SettingsProps> = ({ cards, onBack, onRestore, onOpenBarcodeTester }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState<ParsedBackup | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
@@ -122,6 +123,17 @@ const Settings: React.FC<SettingsProps> = ({ cards, onBack, onRestore }) => {
               </div>
             </div>
           )}
+        </section>
+
+        <section className="bg-gray-800 rounded-xl shadow-lg p-5">
+          <h2 className="text-lg font-bold text-white">條碼測試器</h2>
+          <p className="text-sm text-gray-400 mt-1">掃描條碼並顯示內容與格式，用於除錯條碼讀取結果不一致的問題。</p>
+          <button
+            onClick={onOpenBarcodeTester}
+            className="mt-4 w-full px-4 py-2 rounded-md text-sm font-medium text-white bg-gray-600 hover:bg-gray-500"
+          >
+            開啟條碼測試器
+          </button>
         </section>
 
         {notice && (

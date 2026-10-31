@@ -6,8 +6,9 @@ import CardList from './components/CardList';
 import AddCard from './components/AddCard';
 import CardDetail from './components/CardDetail';
 import Settings from './components/Settings';
+import BarcodeTester from './components/BarcodeTester';
 
-type View = 'list' | 'add' | 'detail' | 'settings';
+type View = 'list' | 'add' | 'detail' | 'settings' | 'barcode-tester';
 
 function App() {
   const [cards, setCards] = useLocalStorage<Card[]>('digital-wallet-cards', []);
@@ -57,7 +58,10 @@ function App() {
       return <AddCard onSave={handleSaveCard} onCancel={handleBack} />;
     }
     if (view === 'settings') {
-      return <Settings cards={cards} onBack={handleBack} onRestore={setCards} />;
+      return <Settings cards={cards} onBack={handleBack} onRestore={setCards} onOpenBarcodeTester={() => setView('barcode-tester')} />;
+    }
+    if (view === 'barcode-tester') {
+      return <BarcodeTester onBack={handleOpenSettings} />;
     }
     if (view === 'detail' && selectedCardId) {
       const selectedCard = cards.find(card => card.id === selectedCardId);
