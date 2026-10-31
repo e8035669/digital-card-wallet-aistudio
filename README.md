@@ -23,7 +23,7 @@
 
 ## 技術架構
 
-- React 19 + TypeScript + Vite 6
+- React 19 + TypeScript 7 + Vite 8
 - Tailwind CSS（CDN）
 - [JsBarcode](https://github.com/lindell/JsBarcode)（CDN）：以 CODE128 將字串繪製成 SVG 條碼
 - [html5-qrcode](https://github.com/mebjas/html5-qrcode)（CDN）：相機與圖片掃描
@@ -59,7 +59,6 @@ interface Card {
 ### 已知注意事項
 
 - JsBarcode 與 html5-qrcode 由 `index.html` 以 `<script>` 從 CDN 載入並以全域變數使用，離線時無法顯示或掃描條碼。
-- `index.html` 內仍有 AI Studio 遺留的 `importmap`，以及 `vite.config.ts` 中的 `GEMINI_API_KEY` 設定，本專案並未使用 Gemini，可於日後清除。
 - 相機掃描需要 HTTPS 或 `localhost`（`metadata.json` 宣告了 `camera` 權限）。
 - 目前 UI 文字皆為英文，卡片類型尚未包含全家。
 
