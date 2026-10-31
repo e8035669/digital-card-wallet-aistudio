@@ -12,45 +12,55 @@ const Scanner: React.FC<ScannerProps> = ({ onScanSuccess, onClose }) => {
   const scannerRef = useRef<any>(null);
 
   useEffect(() => {
-    const qrCodeRegionId = "qr-code-reader";
-    
-    const html5QrCode = new Html5Qrcode(qrCodeRegionId);
+    const html5QrCode = new Html5Qrcode("qr-code-reader");
     scannerRef.current = html5QrCode;
+    let cancelled = false;
+    let startPromise: Promise<unknown> | null = null;
 
-    const startScanner = async () => {
-      try {
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          {
-            fps: 10,
-            qrbox: { width: 250, height: 150 }
-          },
-          (decodedText: string, decodedResult: any) => {
-            onScanSuccess(decodedText);
-            stopScanner();
-          },
-          (errorMessage: string) => {
-            // handle scan error
-          }
-        );
-      } catch (err) {
-        console.error("Unable to start scanner", err);
-      }
-    };
-    
     const stopScanner = async () => {
-      if (scannerRef.current && scannerRef.current.isScanning) {
+      // Wait for start() to settle so StrictMode's mount/unmount/mount doesn't race.
+      try { await startPromise; } catch { /* start failure already logged */ }
+      if (html5QrCode.isScanning) {
         try {
-          await scannerRef.current.stop();
-        } catch(err) {
+          await html5QrCode.stop();
+        } catch (err) {
           console.error("Error stopping scanner", err);
         }
       }
     };
 
-    startScanner();
+    startPromise = html5QrCode
+      .start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          // Size the scan box relative to the actual video so the frame stays inside the preview.
+          qrbox: (viewfinderWidth: number, viewfinderHeight: number) => {
+            const width = Math.floor(viewfinderWidth * 0.8);
+            const height = Math.floor(Math.min(viewfinderHeight * 0.6, width * 0.6));
+            return { width, height };
+          },
+        },
+        (decodedText: string) => {
+          if (cancelled) return;
+          cancelled = true;
+          onScanSuccess(decodedText);
+          stopScanner();
+        },
+        () => {}
+      )
+      .catch((err: unknown) => {
+        console.error("Unable to start scanner", err);
+      });
 
     return () => {
+      cancelled = true;
+      stopScanner();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return () => {
       stopScanner();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +68,7 @@ const Scanner: React.FC<ScannerProps> = ({ onScanSuccess, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center z-50 p-4">
-      <div id="qr-code-reader" className="w-full max-w-md aspect-video rounded-lg overflow-hidden"></div>
+      <div id="qr-code-reader" className="w-full max-w-md rounded-lg"></div>
       <p className="mt-4 text-gray-300">請將相機對準條碼</p>
       <button
         onClick={onClose}
