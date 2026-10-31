@@ -60,12 +60,6 @@ const Scanner: React.FC<ScannerProps> = ({ onScanSuccess, onClose }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return () => {
-      stopScanner();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center z-50 p-4">
       <div id="qr-code-reader" className="w-full max-w-md rounded-lg"></div>
