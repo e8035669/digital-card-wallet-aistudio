@@ -43,7 +43,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !barcode1.trim() || (cardConfig.barcodeCount > 1 && !barcode2.trim())) {
-      alert('Please fill in all fields.');
+      alert('請填寫所有欄位。');
       return;
     }
     onSave({
@@ -79,7 +79,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
         handleScanSuccess(decodedText);
       } catch (err) {
         console.error('Error scanning file:', err);
-        alert('Could not find a barcode in the selected image. Please try another one.');
+        alert('在所選圖片中找不到條碼，請換一張圖片再試一次。');
         setActiveScanTarget(null);
       } finally {
         if (fileInputRef.current) {
@@ -94,7 +94,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
   const ScanOptionsModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4" aria-modal="true" role="dialog">
       <div className="bg-gray-800 rounded-2xl shadow-xl p-6 w-full max-w-xs text-center transform transition-all">
-        <h3 className="text-xl font-bold mb-6 text-white">Choose Scan Method</h3>
+        <h3 className="text-xl font-bold mb-6 text-white">選擇掃描方式</h3>
         <div className="space-y-4">
           <button
             onClick={() => {
@@ -104,7 +104,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
             className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-            <span>Use Camera</span>
+            <span>使用相機</span>
           </button>
           <button
             onClick={() => {
@@ -113,7 +113,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
             className="w-full bg-gray-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            <span>Upload Image</span>
+            <span>上傳圖片</span>
           </button>
         </div>
         <button
@@ -123,7 +123,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
           }}
           className="mt-6 text-gray-400 hover:text-white text-sm"
         >
-          Cancel
+          取消
         </button>
       </div>
     </div>
@@ -153,13 +153,13 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
 
       <div className="p-4 md:p-6 min-h-screen">
         <header className="mb-8">
-          <h1 className="text-4xl font-extrabold text-white tracking-tight">Add New Card</h1>
+          <h1 className="text-4xl font-extrabold text-white tracking-tight">新增卡片</h1>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
           <div>
             <label htmlFor="card-type" className="block text-sm font-medium text-gray-300">
-              Card Type
+              卡片類型
             </label>
             <select
               id="card-type"
@@ -175,7 +175,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
 
           <div>
             <label htmlFor="card-name" className="block text-sm font-medium text-gray-300">
-              Card Name (e.g., "My Library Card")
+              卡片名稱（例如：「我的借書證」）
             </label>
             <input
               type="text"
@@ -206,7 +206,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
                 onClick={() => handleScanRequest('barcode1')}
                 className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600"
               >
-                Scan
+                掃描
               </button>
             </div>
           </div>
@@ -231,7 +231,7 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
                   onClick={() => handleScanRequest('barcode2')}
                   className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600"
                 >
-                  Scan
+                  掃描
                 </button>
               </div>
             </div>
@@ -243,13 +243,13 @@ const AddCard: React.FC<AddCardProps> = ({ onSave, onCancel }) => {
               onClick={onCancel}
               className="px-6 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none"
             >
-              Cancel
+              取消
             </button>
             <button
               type="submit"
               className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
             >
-              Save Card
+              儲存卡片
             </button>
           </div>
         </form>

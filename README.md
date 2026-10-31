@@ -60,7 +60,7 @@ interface Card {
 
 - JsBarcode 與 html5-qrcode 由 `index.html` 以 `<script>` 從 CDN 載入並以全域變數使用，離線時無法顯示或掃描條碼。
 - 相機掃描需要 HTTPS 或 `localhost`（`metadata.json` 宣告了 `camera` 權限）。
-- 目前 UI 文字皆為英文，卡片類型尚未包含全家。
+- 目前 UI 文字為繁體中文，卡片類型尚未包含全家。
 
 ## 開發環境（pixi）
 

@@ -1,6 +1,6 @@
 {
-  "name": "Digital Card Wallet",
-  "description": "Digitize your physical gift cards and merchandise cards. Scan or manually enter barcode information to store them conveniently on your phone, so you don't have to carry the physical cards.",
+  "name": "數位卡片錢包",
+  "description": "將實體禮物卡與商品卡數位化。掃描或手動輸入條碼資訊，方便存放在手機中，不必再隨身攜帶實體卡片。",
   "requestFramePermissions": [
     "camera"
   ]

@@ -24,7 +24,7 @@ const CardList: React.FC<CardListProps> = ({ cards, onSelectCard, onAddCard }) =
   return (
     <div className="p-4 md:p-6 min-h-screen">
       <header className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-extrabold text-white tracking-tight">My Cards</h1>
+        <h1 className="text-4xl font-extrabold text-white tracking-tight">我的卡片</h1>
       </header>
       
       {cards.length > 0 ? (
@@ -38,8 +38,8 @@ const CardList: React.FC<CardListProps> = ({ cards, onSelectCard, onAddCard }) =
           <svg className="mx-auto h-12 w-12 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
           </svg>
-          <h3 className="mt-2 text-lg font-medium text-gray-300">No cards yet</h3>
-          <p className="mt-1 text-sm text-gray-500">Get started by adding a new gift or merchandise card.</p>
+          <h3 className="mt-2 text-lg font-medium text-gray-300">尚無卡片</h3>
+          <p className="mt-1 text-sm text-gray-500">點擊新增按鈕，加入第一張禮物卡或商品卡。</p>
           <div className="mt-6">
             <button
               onClick={onAddCard}
@@ -57,7 +57,7 @@ const CardList: React.FC<CardListProps> = ({ cards, onSelectCard, onAddCard }) =
         <button
           onClick={onAddCard}
           className="fixed bottom-8 right-8 bg-indigo-600 text-white p-4 rounded-full shadow-2xl hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition-transform transform hover:scale-110"
-          aria-label="Add new card"
+          aria-label="新增卡片"
         >
           <PlusIcon className="h-8 w-8" />
         </button>

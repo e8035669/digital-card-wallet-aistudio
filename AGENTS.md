@@ -35,7 +35,7 @@ pixi run npm install <pkg>   # 新增/更新依賴（會同步更新 package-loc
 - 已存入 localStorage 的 `Card` 結構與 `CardType` 字串值（`SEVEN_ELEVEN` 等）是使用者資料格式，修改或重新命名時需考慮向下相容或提供遷移。
 - `vite.config.ts` 設定 `base: ''`（相對路徑，供 GitHub Pages）、`@` 別名指向專案根目錄、dev server 綁定 `0.0.0.0:3000`。
 - 相機掃描需 HTTPS 或 localhost。
-- 目前 UI 文字為英文；專案沒有 AI Studio / Gemini 相關內容，不要重新加入。
+- 目前 UI 文字為繁體中文；專案沒有 AI Studio / Gemini 相關內容，不要重新加入。
 
 ## 部署
 

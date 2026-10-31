@@ -8,18 +8,18 @@ interface CardTypeConfig {
 
 export const CARD_TYPE_CONFIG: Record<CardType, CardTypeConfig> = {
   [CardType.SevenEleven]: {
-    name: '7-Eleven Merchandise Card',
+    name: '7-Eleven 商品卡',
     barcodeCount: 2,
-    barcodeLabels: ['Barcode 1 (31-xxxxxxxxxxxx)', 'Barcode 2 (xxxxxxxxxxxxxxxx)'],
+    barcodeLabels: ['條碼 1（31-xxxxxxxxxxxx）', '條碼 2（xxxxxxxxxxxxxxxx）'],
   },
   [CardType.Library]: {
-    name: 'Library Card',
+    name: '圖書館借書證',
     barcodeCount: 1,
-    barcodeLabels: ['Library Card Number'],
+    barcodeLabels: ['借書證號碼'],
   },
   [CardType.Generic]: {
-    name: 'Generic Card',
+    name: '一般卡片',
     barcodeCount: 1,
-    barcodeLabels: ['Barcode'],
+    barcodeLabels: ['條碼'],
   },
 };

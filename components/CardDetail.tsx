@@ -14,7 +14,7 @@ interface CardDetailProps {
 
 const CardDetail: React.FC<CardDetailProps> = ({ card, onBack, onDelete }) => {
   const handleDelete = () => {
-    if (window.confirm(`Are you sure you want to delete "${card.name}"? This action cannot be undone.`)) {
+    if (window.confirm(`確定要刪除「${card.name}」嗎？此操作無法復原。`)) {
       onDelete(card.id);
     }
   };
@@ -26,7 +26,7 @@ const CardDetail: React.FC<CardDetailProps> = ({ card, onBack, onDelete }) => {
        <header className="flex justify-between items-center mb-8">
         <button onClick={onBack} className="flex items-center space-x-2 text-indigo-400 hover:text-indigo-300">
           <ChevronLeftIcon className="h-6 w-6" />
-          <span className="font-bold">Back</span>
+          <span className="font-bold">返回</span>
         </button>
         <button onClick={handleDelete} className="text-red-500 hover:text-red-400">
           <TrashIcon className="h-6 w-6" />
