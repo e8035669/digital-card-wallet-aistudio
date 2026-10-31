@@ -23,7 +23,8 @@ pixi run npm install <pkg>   # 新增/更新依賴（會同步更新 package-loc
 - `App.tsx`：唯一的狀態來源。`view`（`list` / `add` / `detail`）切換畫面，卡片 CRUD 在此，資料以 `useLocalStorage('digital-wallet-cards')` 持久化。無路由。
 - `types.ts`：`Card`、`CardType`。`barcode2` 為 `string | null`（單條碼卡片為 null）。
 - `constants.ts`：`CARD_TYPE_CONFIG`，定義各卡片類型的名稱、條碼數量、欄位標籤。
-- `components/`：`CardList`、`AddCard`、`Scanner`（相機）、`CardDetail`、`Barcode`、`icons/`。
+- `components/`：`CardList`、`AddCard`、`Scanner`（相機）、`CardDetail`、`Barcode`、`Settings`（備份與還原）、`icons/`。`Settings` 由 `CardList` 標題列的齒輪按鈕進入（`view === 'settings'`）。
+- `utils/backup.ts`：備份檔（JSON，含 `app` / `version` / `exportedAt` / `cards`）的匯出、驗證解析與合併邏輯。修改 `Card` 結構時需同步調整 `normalizeCard`，必要時提升 `BACKUP_VERSION`。
 - `hooks/useLocalStorage.ts`：localStorage 同步 hook。
 
 ## 慣例與注意事項

@@ -2,12 +2,14 @@
 import React from 'react';
 import { Card } from '../types';
 import PlusIcon from './icons/PlusIcon';
+import CogIcon from './icons/CogIcon';
 import { CARD_TYPE_CONFIG } from '../constants';
 
 interface CardListProps {
   cards: Card[];
   onSelectCard: (id: string) => void;
   onAddCard: () => void;
+  onOpenSettings: () => void;
 }
 
 const CardListItem: React.FC<{ card: Card; onClick: () => void }> = ({ card, onClick }) => (
@@ -20,11 +22,18 @@ const CardListItem: React.FC<{ card: Card; onClick: () => void }> = ({ card, onC
   </li>
 );
 
-const CardList: React.FC<CardListProps> = ({ cards, onSelectCard, onAddCard }) => {
+const CardList: React.FC<CardListProps> = ({ cards, onSelectCard, onAddCard, onOpenSettings }) => {
   return (
     <div className="p-4 md:p-6 min-h-screen">
       <header className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-extrabold text-white tracking-tight">我的卡片</h1>
+        <button
+          onClick={onOpenSettings}
+          className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          aria-label="設定（備份與還原）"
+        >
+          <CogIcon className="h-7 w-7" />
+        </button>
       </header>
       
       {cards.length > 0 ? (

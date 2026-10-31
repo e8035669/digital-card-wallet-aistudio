@@ -5,8 +5,9 @@ import { Card } from './types';
 import CardList from './components/CardList';
 import AddCard from './components/AddCard';
 import CardDetail from './components/CardDetail';
+import Settings from './components/Settings';
 
-type View = 'list' | 'add' | 'detail';
+type View = 'list' | 'add' | 'detail' | 'settings';
 
 function App() {
   const [cards, setCards] = useLocalStorage<Card[]>('digital-wallet-cards', []);
@@ -38,6 +39,10 @@ function App() {
     setSelectedCardId(null);
   }
 
+  const handleOpenSettings = () => {
+    setView('settings');
+  };
+
   const handleBack = () => {
     setView('list');
     setSelectedCardId(null);
@@ -51,13 +56,16 @@ function App() {
     if (view === 'add') {
       return <AddCard onSave={handleSaveCard} onCancel={handleBack} />;
     }
+    if (view === 'settings') {
+      return <Settings cards={cards} onBack={handleBack} onRestore={setCards} />;
+    }
     if (view === 'detail' && selectedCardId) {
       const selectedCard = cards.find(card => card.id === selectedCardId);
       if (selectedCard) {
         return <CardDetail card={selectedCard} onBack={handleBack} onDelete={handleDeleteCard} />;
       }
     }
-    return <CardList cards={sortedCards} onAddCard={handleAddCard} onSelectCard={handleSelectCard} />;
+    return <CardList cards={sortedCards} onAddCard={handleAddCard} onSelectCard={handleSelectCard} onOpenSettings={handleOpenSettings} />;
   };
 
   return (
